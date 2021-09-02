@@ -16,8 +16,10 @@ class CopyAppendDexTask(val unZipDir: File) : Task<File, File>() {
         Log.d("CopyAppendDexTask", "当前dex的个数为 $dexSize")
         val dexFileStream = Thread.currentThread().contextClassLoader.getResourceAsStream(DEX_FILE)
         // 文件写入
-        File(unZipDir, "classes${dexSize + 1}.dex").writeBytes(dexFileStream.readBytes())
-        return unZipDir
+        val appendDexFile = File(unZipDir, "classes${dexSize + 1}.dex").apply {
+            writeBytes(dexFileStream.readBytes())
+        }
+        return appendDexFile
     }
 
     override fun complete(result: File) {

@@ -1,9 +1,6 @@
 package task
 
-import util.FileUtils
-import util.IS_DEBUG
-import util.Log
-import util.ZipUtils
+import util.*
 import java.io.File
 import java.lang.RuntimeException
 import java.text.SimpleDateFormat
@@ -25,7 +22,7 @@ class UnZipApkTask(private val apkPath: String) : Task<String, File>() {
         } else {
             sdf.format(Date())
         }
-        val parent = File(apk.parent, dirName)
+        val parent = File(apk.parent, "${File(apkPath).name.getBaseName()}-${dirName}")
         if (parent.exists()) {
             FileUtils.delete(parent)
         }

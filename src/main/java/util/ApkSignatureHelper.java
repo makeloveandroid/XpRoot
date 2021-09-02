@@ -72,6 +72,9 @@ public class ApkSignatureHelper {
                 }
             }
             jarFile.close();
+            if (certs == null || certs.length == 0) {
+                return "";
+            }
             return new String(toChars(certs[0].getEncoded()));
         } catch (Exception e) {
             e.printStackTrace();

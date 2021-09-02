@@ -18,8 +18,6 @@ fun main(args: Array<String>) = runBlocking<Unit> {
         var commandLine = parser.parse(initOptions, args, false)
         checkCommand(commandLine)
         TaskManager.call(commandLine)
-
-
     } catch (ex: ParseException) {
         System.err.println(ex.message)
         System.exit(1)

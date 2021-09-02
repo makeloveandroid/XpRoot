@@ -39,6 +39,7 @@ public class InjectMethodBuilder {
         ImmutableMethodImplementation methodImpl = new ImmutableMethodImplementation(0, instructions, null, null);
         return new ImmutableMethod(className, "<clinit>", new ArrayList<>(), "V", AccessFlags.STATIC.getValue() | AccessFlags.CONSTRUCTOR.getValue(), null, null, methodImpl);
     }
+
     public static Method buildStaticContextMethod(String className, Method mehtod) {
         ArrayList<Instruction> instructions = Lists.newArrayList(
                 ImmutableInstructionFactory.INSTANCE.makeInstruction35c(Opcode.INVOKE_STATIC, 0, 0, 0, 0, 0, 0, getStaticContextMethodRef())
@@ -57,4 +58,32 @@ public class InjectMethodBuilder {
                 mehtod.getHiddenApiRestrictions(), newImplementation);
     }
 
+
+    public static MethodReference getSuperRf(String className) {
+        return new ImmutableMethodReference(className, "<init>", null, "V");
+    }
+
+
+    public static Method changeInitSuperMethod(String className, Method mehtod, String callClassName) {
+        ArrayList<Instruction> instructions = Lists.newArrayList(
+                ImmutableInstructionFactory.INSTANCE.makeInstruction35c(Opcode.INVOKE_DIRECT, 1, 0, 0, 0, 0, 0, getSuperRf(callClassName))
+        );
+        MethodImplementation implementation = mehtod.getImplementation();
+        MethodImplementation newImplementation = null;
+        if (implementation != null) {
+            int registerCount = implementation.getRegisterCount();
+            boolean isFirst = false;
+            for (Instruction instruction : mehtod.getImplementation().getInstructions()) {
+                // 删除第一条指令 就是super方法
+                if (isFirst) {
+                    instructions.add(instruction);
+                }
+                isFirst = true;
+            }
+            newImplementation = new ImmutableMethodImplementation(registerCount, instructions, implementation.getTryBlocks(), implementation.getDebugItems());
+        }
+
+        return new ImmutableMethod(className, mehtod.getName(), mehtod.getParameters(), mehtod.getReturnType(), mehtod.getAccessFlags(), mehtod.getAnnotations(),
+                mehtod.getHiddenApiRestrictions(), newImplementation);
+    }
 }

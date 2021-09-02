@@ -2,6 +2,7 @@ import org.jf.dexlib2.iface.Annotation;
 import org.jf.dexlib2.iface.ClassDef;
 import org.jf.dexlib2.iface.Field;
 import org.jf.dexlib2.iface.Method;
+import util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class ClassDefWrapper implements ClassDef {
     private int accessFlags;
     private List<Method> virtualMethods = new ArrayList<>();
     private List<Method> directMethods = new ArrayList<>();
+    private String changeSupperClass;
 
     public ClassDefWrapper(ClassDef classDef) {
         this.classDef = classDef;
@@ -52,8 +54,16 @@ public class ClassDefWrapper implements ClassDef {
         return classDef.getAccessFlags();
     }
 
+
+    public void setSupperClass(String supperClass) {
+        this.changeSupperClass = supperClass;
+    }
+
     @Override
     public String getSuperclass() {
+        if (!TextUtils.isEmpty(changeSupperClass)) {
+            return changeSupperClass;
+        }
         return classDef.getSuperclass();
     }
 
