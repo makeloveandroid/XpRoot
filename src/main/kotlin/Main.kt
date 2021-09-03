@@ -67,6 +67,13 @@ fun initOptions(): Options {
         .desc("是否启用debug模式")
         .build()
 
+    val dexOption = Option.builder("dex")
+            .longOpt("dex")
+            .hasArg(true)
+            .desc("是否注入宿主的Application代码块")
+            .build()
+
+    options.addOption(dexOption)
     options.addOption(hostOption)
     options.addOption(debugOption)
     options.addOption(virusOption)
