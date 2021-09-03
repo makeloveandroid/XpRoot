@@ -2,14 +2,23 @@ package task
 
 import com.android.apksigner.ApkSignerTool
 import com.wind.meditor.utils.ShellCmdUtil
+import util.Log
 import java.io.File
 import java.util.*
 
 class SignApkTask(val unsignApk: File) : Task<File, File>() {
     override fun execute(): File {
+        Log.d("SignApkTask", "开始重新签名App!!!")
+        // copy 签名
+        val singFile = File(unsignApk.parent, "keystore").apply {
+            writeBytes(Thread.currentThread().contextClassLoader.getResourceAsStream("keystore").readBytes())
+        }
+
         val signApk = File(unsignApk.parent, "app-signed.apk")
-        signApk(unsignApk.absolutePath,
-            "/Users/wengege/Desktop/Xpath/Xpatch/xpatch/src/main/assets/keystore",signApk.absolutePath)
+        signApk(
+            unsignApk.absolutePath,
+            singFile.absolutePath, signApk.absolutePath
+        )
         return signApk
     }
 
@@ -98,6 +107,7 @@ class SignApkTask(val unsignApk: File) : Task<File, File>() {
     }
 
     override fun complete(result: File) {
+        Log.d("SignApkTask", "APP 签名完成 ${result.absolutePath}")
     }
 
 }

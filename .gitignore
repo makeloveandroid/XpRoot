@@ -1,3 +1,5 @@
 /.gradle/
 /build/
 /.idea/
+/META-INF/
+/out/

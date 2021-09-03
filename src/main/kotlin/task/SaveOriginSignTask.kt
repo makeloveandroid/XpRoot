@@ -15,7 +15,6 @@ class SaveOriginSignTask(val apkFile: File, val unZipFile: File) : Task<File, Fi
             Log.d("SaveOriginSignTask", "获取签名出错!")
             return apkFile
         }
-        Log.d("SaveOriginSignTask", "原始签名: $originalSignature")
         val signFile = File(unZipFile, SIGNATURE_INFO_ASSET_PATH)
         if (!signFile.parentFile.exists()) {
             signFile.parentFile.mkdirs()
@@ -23,7 +22,6 @@ class SaveOriginSignTask(val apkFile: File, val unZipFile: File) : Task<File, Fi
 
 
         signFile.writeText(originalSignature)
-
 
         return signFile
 

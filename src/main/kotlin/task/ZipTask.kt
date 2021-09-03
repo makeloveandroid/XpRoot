@@ -10,6 +10,8 @@ import java.util.zip.ZipOutputStream
 class ZipTask(val unZipDir: File) : Task<File, File>() {
     override fun execute(): File {
         val unsignedApp = File(unZipDir.parent, "app-unsigned.apk")
+        Log.d("ZipTask","重新压缩${unsignedApp.absolutePath}")
+
         val cos = CheckedOutputStream(unsignedApp.outputStream(), CRC32())
         val zipOut = ZipOutputStream(cos)
         val listFiles = unZipDir.listFiles()
@@ -18,7 +20,7 @@ class ZipTask(val unZipDir: File) : Task<File, File>() {
     }
 
     override fun complete(result: File) {
-        Log.d("ZipTask","重新压缩${result.absolutePath}")
+        Log.d("ZipTask","重新压缩完成${result.absolutePath}")
     }
 
 }
