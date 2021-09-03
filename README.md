@@ -1,7 +1,13 @@
 # XpRoot
-XpRoot是一款通过解压APK,动态修改Dex文件,实现注入Xposed模块的应用.  
+XpRoot是一款通过解压APK，动态修改Dex文件，实现注入Xposed模块的应用.  
 
 # 基本原理
+1. 解压Apk
+2. 读取宿主Application
+3. 修改宿主Application的Dex，注入加载XP模块逻辑
+4. 重新压缩
+5. 签名APP
+
 ![](https://s3.bmp.ovh/imgs/2021/09/ff1ce1531bce91f7.png)
 
 ![](https://s3.bmp.ovh/imgs/2021/09/4383d1d1d549fc84.png)
