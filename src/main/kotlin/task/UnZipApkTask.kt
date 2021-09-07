@@ -5,14 +5,17 @@ import java.io.File
 import java.lang.RuntimeException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class UnZipApkTask(private val apkPath: String) : Task<String, File>() {
+class UnZipApkData(val file: File, val uncompressedFilesOrExts: ArrayList<String>)
+
+class UnZipApkTask(private val apkPath: String) : Task<String, UnZipApkData>() {
     companion object{
         private const val DATA_PATTERN = "yyyy-MM-dd HH:mm:ss";
         private val sdf = SimpleDateFormat(DATA_PATTERN);
     }
 
-    override fun execute(): File {
+    override fun execute(): UnZipApkData {
         val apk = File(apkPath)
         if (!apk.exists()) {
             throw RuntimeException("宿主APP不存在")
@@ -28,12 +31,13 @@ class UnZipApkTask(private val apkPath: String) : Task<String, File>() {
         }
         val dir = File(parent, "app")
         dir.mkdirs()
-        ZipUtils.unzipFile(apk, dir)
-        return dir
+        val data = UnZipApkData(dir, ArrayList())
+        ApkZipUtils.unzipFile(apk, dir, data.uncompressedFilesOrExts, null)
+        return data
     }
 
 
-    override fun complete(result: File) {
-        Log.d("wyz", "解压APP完成:${result.absolutePath}")
+    override fun complete(result: UnZipApkData) {
+        Log.d("wyz", "解压APP完成:${result.file.absoluteFile}")
     }
 }

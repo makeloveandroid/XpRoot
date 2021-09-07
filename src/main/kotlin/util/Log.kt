@@ -1,6 +1,6 @@
 package util
 
-const val IS_DEBUG = false
+const val IS_DEBUG = true
 
 object Log {
     @JvmStatic

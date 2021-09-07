@@ -6,7 +6,7 @@ import java.io.File
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
-class GetApplicationTask(val apkFile: File) : Task<File, String>() {
+open class GetApplicationTask(val apkFile: File) : Task<File, String>() {
     companion object {
         const val ANDROID_MANIFEST = "AndroidManifest.xml"
     }

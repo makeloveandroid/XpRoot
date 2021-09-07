@@ -118,7 +118,7 @@ public final class ZipUtils {
         }
     }
 
-    public static boolean zipFiles(final Collection<File> srcFiles,
+    private static boolean zipFiles(final Collection<File> srcFiles,
                                    final File zipFile,
                                    ZipOutputStream zos,
                                    final String comment)

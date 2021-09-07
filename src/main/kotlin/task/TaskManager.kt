@@ -10,7 +10,9 @@ object TaskManager {
         val debug = commandLine.getOptionValue("debug")
         val dex = commandLine.getOptionValue("dex")
         // 第一步 Copy 1份 Apk
-        val unApkFile = UnZipApkTask(host).call()
+        val result = UnZipApkTask(host).call()
+        val unApkFile = result.file
+        val uncompressedFilesOrExts = result.uncompressedFilesOrExts
 
         // 保存原来的签名文件
         SaveOriginSignTask(File(host), unApkFile).call()
@@ -51,7 +53,7 @@ object TaskManager {
         CopyXpModelTask(unApkFile, mutableListOf(virus)).call()
 
         // 重新压缩App
-        val unsignedApp = ZipTask(unApkFile).call()
+        val unsignedApp = ZipTask(unApkFile, uncompressedFilesOrExts).call()
         // 重新签名
         SignApkTask(unsignedApp).call()
     }
